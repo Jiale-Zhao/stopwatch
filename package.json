@@ -1,0 +1,11 @@
+{
+  "name": "stopwatch",
+  "version": "1.0.0",
+  "description": "一个简单易用的web秒表应用",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jiale-Zhao",
+  "license": "ISC"
+}

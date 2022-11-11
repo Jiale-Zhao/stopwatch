@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Stopwatch</title>
+        <!-- Vue.js -->
+        <script src="./public/javascript/vue.min.js"></script>
+        <!-- stylesheet -->
+        <link rel="stylesheet" href="./public/stylesheet/index.css" />
+    </head>
+    <body>
+        <div id="root" class="container">
+            <h2>{{second}}.{{hsecond}}</h2>
+            <div id="buttons">
+                <input
+                    type="button"
+                    value="开始"
+                    id="start"
+                    :disabled="isDisabled"
+                    @click="start"
+                />
+                <input type="button" value="停止" @click="stop" />
+                <input type="button" value="重新开始" @click="restart" />
+                <input type="button" value="记录" @click="note" />
+                <input type="button" value="清空记录" @click="clearNotes" />
+            </div>
+        </div>
+        <div id="notesDad">
+            记录：
+            <div id="notes"></div>
+        </div>
+        <script>
+            alert(
+                "这是一个web端的秒表应用，你可以用它来测试跑步成绩或进行其他测试，使用愉快！"
+            );
+
+            var second = 0;
+            var hsecond = 0;
+            var time = 0;
+            const S = 10;
+            var number = 1;
+
+            var vm = new Vue({
+                el: "#root",
+                data: {
+                    second: second,
+                    hsecond: "0" + hsecond.toString(),
+                    isDisabled: false,
+                },
+                methods: {
+                    start: function () {
+                        time = setInterval(function () {
+                            vm.hsecond++;
+                            if (vm.hsecond < 10) {
+                                vm.hsecond = "0" + vm.hsecond.toString();
+                            }
+                            if (vm.hsecond == 99) {
+                                vm.hsecond = 0;
+                                vm.second++;
+                            }
+                            if (vm.hsecond == 0) {
+                                vm.hsecond = "00";
+                            }
+                            vm.isDisabled = true;
+                            document.getElementById("start").value = "开始";
+                        }, S);
+                    },
+                    stop: function () {
+                        clearInterval(time);
+                        vm.isDisabled = false;
+                        if (vm.hsecond != "00") {
+                            document.getElementById("start").value = "继续";
+                        }
+                    },
+                    restart: function () {
+                        clearInterval(time);
+                        vm.hsecond = "00";
+                        vm.second = 0;
+                        vm.isDisabled = false;
+                        document.getElementById("start").value = "开始";
+                    },
+                    note: function () {
+                        var noteNode = document.createElement("div");
+                        var noteContent = document.createTextNode(
+                            "第" +
+                                number +
+                                "名 " +
+                                vm.second +
+                                "." +
+                                vm.hsecond +
+                                "s"
+                        );
+                        noteNode.appendChild(noteContent);
+                        document.getElementById("notes").appendChild(noteNode);
+                        number++;
+                    },
+                    clearNotes: function () {
+                        document.getElementById("notes").innerHTML = "";
+                        number = 1;
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>
